@@ -1,4 +1,5 @@
 #include "Quaternions.h"
+#include <stdlib.h>
 
 Quaternions::Quaternions(float xi, float yi, float zi, float wi)
 {
@@ -9,6 +10,8 @@ Quaternions::Quaternions(float xi, float yi, float zi, float wi)
         w = wi;
 
         float q[] = {x, y, z, w};
+        float qMat[4][4];
+
 }
 
 Quaternions::~Quaternions()
@@ -22,13 +25,18 @@ Quaternions GetqConj(Quaternions q)
     return qConj;
 }
 
-Quaternion q Quaternion :: operator * (Quaternion q)
+
+//quaternions forme matricielle
+float** matq(float **qMat, Quaternions q)
 {
-  return Quaternion(
-    - x*q.x - y*q.y - z*q.z + w*q.w,
-   x*q.w + y*q.z - z*q.y +  w*q.x,
-   y*q.w + z*q.x - x*q.z + w*q.y ,
-   z*q.w + x*q.y - y*q.x + w*q.z);
+     qMat = {
+                            {q.x, -q.y, -q.z, -q.w},
+                            {q.y, q.x, -q.w, q.z},
+                            {q.z, q.w, q.x, -q.y},
+                            {q.w, -q.z, q.y, q.x}
+                        };
+
+       return (float**)qMat;
 }
 
 

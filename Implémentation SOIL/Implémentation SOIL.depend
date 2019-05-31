@@ -225,3 +225,45 @@
 
 1559297607 d:\got\documents\code\cours\mathématiques\implementation_soil_texturage\implémentation soil\include\quaternions.h
 
+1396224118 source:d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\src\block.cpp
+	"Block.h"
+
+1396224118 d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\include\block.h
+	<GL/gl.h>
+	<GL/glu.h>
+	"glut.h"
+	"SOIL.h"
+
+976666972 d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\include\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1215454408 d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\include\soil.h
+
+1396000820 source:d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\src\camera.cpp
+	"Camera.h"
+	<math.h>
+
+1395963666 d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\include\camera.h
+
+1396020618 source:d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\src\main.cpp
+	<stdlib.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"glut.h"
+	"SOIL.h"
+	"Camera.h"
+	"Map.h"
+
+1395963024 d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\include\map.h
+	<GL/gl.h>
+	<GL/glu.h>
+	"glut.h"
+	"SOIL.h"
+	"Camera.h"
+
+1396224166 source:d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\src\map.cpp
+	"Map.h"
+	"Block.h"
+

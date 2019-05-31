@@ -36,8 +36,8 @@
 			<Add directory="include" />
 		</Compiler>
 		<Linker>
-			<Add library="lib\glut32.lib" />
-			<Add library="lib\libSOIL.a" />
+			<Add library="lib/glut32.lib" />
+			<Add library="lib/libSOIL.a" />
 			<Add library="glu32" />
 			<Add library="opengl32" />
 			<Add library="winmm" />
@@ -46,9 +46,11 @@
 		<Unit filename="include/Block.h" />
 		<Unit filename="include/Camera.h" />
 		<Unit filename="include/Map.h" />
+		<Unit filename="include/Quaternions.h" />
 		<Unit filename="src/Block.cpp" />
 		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/Map.cpp" />
+		<Unit filename="src/Quaternions.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
