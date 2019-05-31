@@ -1,5 +1,10 @@
 #ifndef QUATERNIONS_H
 #define QUATERNIONS_H
+#include <iostream>
+#include <vector>
+#include <stdio.h>
+
+#include <stdlib.h>
 
 class Quaternions
 {
@@ -9,8 +14,6 @@ class Quaternions
         float z;
         float w;
         float norme;
-
-	    std::vector<std::vector<float>> qMat;
 
         Quaternions(float xi, float yi, float zi, float wi);
         virtual ~Quaternions();

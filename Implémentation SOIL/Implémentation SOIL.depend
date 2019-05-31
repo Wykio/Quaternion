@@ -267,3 +267,17 @@
 	"Map.h"
 	"Block.h"
 
+1559313868 source:d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\src\quaternions.cpp
+	"Quaternions.h"
+	<stdlib.h>
+	<math.h>
+	<iostream>
+	<vector>
+	<stdlib.h>
+
+1559313785 d:\got\documents\code\cours\mathématiques\quaternion\implémentation soil\include\quaternions.h
+	<iostream>
+	<vector>
+	<stdio.h>
+	<stdlib.h>
+
