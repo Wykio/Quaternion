@@ -1,0 +1,17 @@
+﻿  Block.cpp
+  Camera.cpp
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(40): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(42): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(43): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(44): warning C4244: '-=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(66): warning C4305: '-=' : troncation de 'double' à 'float'
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(68): warning C4305: '+=' : troncation de 'double' à 'float'
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(74): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(77): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(80): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(81): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\antoi\desktop\quaternion\projet_quaternion\src\camera.cpp(82): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+  main.cpp
+  Map.cpp
+  Génération de code en cours...
+LINK : fatal error LNK1104: impossible d'ouvrir le fichier 'glew32s.lib'
