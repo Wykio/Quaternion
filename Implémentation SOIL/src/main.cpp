@@ -178,6 +178,7 @@ int main(int argc, char **argv)
 
     /** GESTION SOURIS **/
     glutMouseFunc(mouseButton);
+    glutMouseFunc(mouseButton);
     glutMotionFunc(mouseMove);
 
     /** INIT TEXTURES **/

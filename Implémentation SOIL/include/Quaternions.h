@@ -12,8 +12,9 @@ class Quaternions
         float z;
         float w;
 
+        float norme;
+
         float q[];
-        float qConj[];
 
         Quaternions operator * (Quaternions &q)
         {
