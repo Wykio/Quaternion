@@ -10,8 +10,16 @@ Quaternions::Quaternions(float xi, float yi, float zi, float wi)
         z = zi;
         w = wi;
 
-        float q[] = {x, y, z, w};
-        float qMat[4][4];
+        qMat.resize(4);
+        for (int i = 0; i < 4; i++)
+        {
+            qMat.resize(4);
+        }
+
+        qMat[0] = { x, -y, -z, -w };
+        qMat[1] = { y, x, -w, z };
+        qMat[2] = { z, w, x, -y };
+        qMat[3] = { w, -z, y, x };
 }
 
 Quaternions::~Quaternions()
@@ -25,18 +33,6 @@ Quaternions GetqConj(Quaternions q)
     return qConj;
 }
 
-//quaternions forme matricielle
-//float** matq(float **qMat, Quaternions q)
-//{
-//     qMat = {
- //                           {q.x, -q.y, -q.z, -q.w},
- //                            {q.y, q.x, -q.w, q.z},
-  //                           {q.z, q.w, q.x, -q.y},
-   //                          {q.w, -q.z, q.y, q.x}
-  //                       };
- //
-   //     return (float**)qMat;
- //}
 
 //calcule de la norme
 float Norme(Quaternions q)
@@ -57,5 +53,17 @@ Quaternions Normalizeq(float norme, Quaternions q)
 
     return q;
 }
+
+
+void Quaternions::Display()
+{
+	std::cout << this->x << " 0 0 0" << std::endl;
+	std::cout << "0 " << this->y << " 0 0" << std::endl;
+	std::cout << "0 0 " << this->z << " 0" << std::endl;
+	std::cout << "0 0 0 " << this->w << std::endl;
+	std::cout << std::endl;
+}
+
+
 
 

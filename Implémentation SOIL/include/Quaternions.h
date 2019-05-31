@@ -4,17 +4,16 @@
 class Quaternions
 {
     public:
-        Quaternions(float xi, float yi, float zi, float wi);
-        virtual ~Quaternions();
-
         float x;
         float y;
         float z;
         float w;
-
         float norme;
 
-        float q[];
+	    std::vector<std::vector<float>> qMat;
+
+        Quaternions(float xi, float yi, float zi, float wi);
+        virtual ~Quaternions();
 
         Quaternions operator * (Quaternions &q)
         {
@@ -24,6 +23,9 @@ class Quaternions
            y*q.w + z*q.x - x*q.z + w*q.y ,
            z*q.w + x*q.y - y*q.x + w*q.z);
         }
+
+        void Display();
+        Quaternions GetqConj(Quaternions q);
 
     protected:
 
