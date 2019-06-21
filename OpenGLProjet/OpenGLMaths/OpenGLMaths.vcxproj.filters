@@ -26,21 +26,21 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PremierShader.c">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\common\GLShader.c">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGLMaths.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.fs.glsl.txt">
+    <Text Include="testOffset.vs.glsl">
       <Filter>Fichiers de ressources</Filter>
     </Text>
-    <Text Include="test.vs.glsl.txt">
+    <Text Include="test.vs.glsl">
       <Filter>Fichiers de ressources</Filter>
     </Text>
-    <Text Include="testOffset.vs.glsl.txt">
+    <Text Include="test.fs.glsl">
       <Filter>Fichiers de ressources</Filter>
     </Text>
   </ItemGroup>

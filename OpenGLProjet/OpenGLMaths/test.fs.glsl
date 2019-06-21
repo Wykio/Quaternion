@@ -1,0 +1,15 @@
+//version du shader
+#version 120
+
+//devenu une variable en entrée du fragment shader
+//valeur finale interpolée par le rasterizer
+varying vec4 v_Color;
+
+uniform float u_Time;
+
+void main (void)
+{
+	//renvoie une couleur
+	gl_FragColor = v_Color;
+
+}

@@ -1,13 +1,9 @@
-﻿C:\Program Files\Visual Studio\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (PremierShader.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
-  GLShader.c
-d:\got\documents\code\cours\mathématiques\openglprojet\common\glshader.c(91): warning C4013: 'memset' non défini(e) ; extern retournant int pris par défaut
-d:\got\documents\code\cours\mathématiques\openglprojet\common\glshader.c(158): warning C4474: 'fprintf' : trop d'arguments passés pour la chaîne de format
-  d:\got\documents\code\cours\mathématiques\openglprojet\common\glshader.c(158): note: les espaces réservés et leurs paramètres attendent des arguments 0 variadiques, mais des arguments 1 ont été fournis
-  OpenGLMaths.c
-d:\got\documents\code\cours\mathématiques\openglprojet\openglmaths\openglmaths.c(10): warning C4098: 'main' : fonction 'void' retournant une valeur
-d:\got\documents\code\cours\mathématiques\openglprojet\openglmaths\openglmaths.c(16): warning C4098: 'main' : fonction 'void' retournant une valeur
-d:\got\documents\code\cours\mathématiques\openglprojet\openglmaths\openglmaths.c(91): warning C4098: 'main' : fonction 'void' retournant une valeur
-  Génération de code en cours...
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (PremierShader.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
+LINK : warning LNK4098: conflit entre la bibliothèque par défaut 'MSVCRT' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
 LINK : warning LNK4098: conflit entre la bibliothèque par défaut 'LIBCMT' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' n'a pu être trouvé avec 'glew32s.lib(glew.obj)' ou sur 'D:\Got\Documents\Code\Cours\Mathématiques\OpenGLProjet\x64\Debug\vc120.pdb' ; l'objet sera lié sans informations de débogage
-  OpenGLMaths.vcxproj -> D:\Got\Documents\Code\Cours\Mathématiques\OpenGLProjet\x64\Debug\OpenGLMaths.exe
+OpenGLMaths.obj : error LNK2019: symbole externe non résolu "bool __cdecl CreateProgram(struct _GLShader *)" (?CreateProgram@@YA_NPEAU_GLShader@@@Z) référencé dans la fonction main
+OpenGLMaths.obj : error LNK2019: symbole externe non résolu "bool __cdecl LoadVertexShader(struct _GLShader,char const *)" (?LoadVertexShader@@YA_NU_GLShader@@PEBD@Z) référencé dans la fonction main
+OpenGLMaths.obj : error LNK2019: symbole externe non résolu "bool __cdecl LoadFragmentShader(struct _GLShader,char const *)" (?LoadFragmentShader@@YA_NU_GLShader@@PEBD@Z) référencé dans la fonction main
+OpenGLMaths.obj : error LNK2019: symbole externe non résolu "bool __cdecl LinkProgram(struct _GLShader)" (?LinkProgram@@YA_NU_GLShader@@@Z) référencé dans la fonction main
+OpenGLMaths.obj : error LNK2019: symbole externe non résolu "bool __cdecl DestroyProgram(struct _GLShader *)" (?DestroyProgram@@YA_NPEAU_GLShader@@@Z) référencé dans la fonction main
+C:\Users\artj3\Documents\Cours\3A ESGI\Quaternion\OpenGLProjet\x64\Debug\OpenGLMaths.exe : fatal error LNK1120: 5 externes non résolus

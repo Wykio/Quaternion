@@ -1,8 +1,4 @@
-﻿C:\Program Files\Visual Studio\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (InitationViewport.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
-  OpenGLProjet.c
-d:\got\documents\code\cours\mathématiques\openglprojet\openglprojet\openglprojet.c(90): warning C4013: 'memset' non défini(e) ; extern retournant int pris par défaut
-d:\got\documents\code\cours\mathématiques\openglprojet\openglprojet\openglprojet.c(157): warning C4474: 'fprintf' : trop d'arguments passés pour la chaîne de format
-  d:\got\documents\code\cours\mathématiques\openglprojet\openglprojet\openglprojet.c(157): note: les espaces réservés et leurs paramètres attendent des arguments 0 variadiques, mais des arguments 1 ont été fournis
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (InitationViewport.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
 OpenGLProjet.obj : error LNK2001: symbole externe non résolu __imp___glewAttachShader
 OpenGLProjet.obj : error LNK2001: symbole externe non résolu __imp___glewCompileShader
 OpenGLProjet.obj : error LNK2001: symbole externe non résolu __imp___glewCreateProgram
@@ -16,4 +12,4 @@ OpenGLProjet.obj : error LNK2001: symbole externe non résolu __imp___glewGetSha
 OpenGLProjet.obj : error LNK2001: symbole externe non résolu __imp___glewLinkProgram
 OpenGLProjet.obj : error LNK2001: symbole externe non résolu __imp___glewShaderSource
 MSVCRTD.lib(exe_main.obj) : error LNK2019: symbole externe non résolu main référencé dans la fonction "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
-D:\Got\Documents\Code\Cours\Mathématiques\OpenGLProjet\x64\Debug\OpenGLProjet.exe : fatal error LNK1120: 13 externes non résolus
+C:\Users\artj3\Documents\Cours\3A ESGI\Quaternion\OpenGLProjet\x64\Debug\OpenGLProjet.exe : fatal error LNK1120: 13 externes non résolus
