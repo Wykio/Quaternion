@@ -1,5 +1,5 @@
 #include "GLShader.h"
-#include "GL/glew.h"
+#include "glew.h"
 
 #include <stdlib.h>
 #include <stdio.h>

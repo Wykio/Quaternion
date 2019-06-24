@@ -4,9 +4,9 @@
 // comme on link avec glew32s.lib (en static)
 // il faut forcer les bons includes egalement
 #define GLEW_STATIC 1	
-#include <GL/glew.h>
+#include <glew.h>
 
-#include <GLFW/glfw3.h>
+#include <glfw3.h>
 
 #include "GLShader.h"
 #include <math.h>

@@ -29,16 +29,12 @@
     <ClCompile Include="GLShader.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Rose.c">
+    <ClCompile Include="OpenGLMaths.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="rose.fs.glsl">
-      <Filter>Fichiers de ressources</Filter>
-    </None>
-    <None Include="rose.vs.glsl">
-      <Filter>Fichiers de ressources</Filter>
-    </None>
+    <None Include="Cube.fs.glsl" />
+    <None Include="Cube.vs.glsl" />
   </ItemGroup>
 </Project>

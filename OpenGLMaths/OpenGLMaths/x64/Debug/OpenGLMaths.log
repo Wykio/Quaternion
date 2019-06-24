@@ -1,5 +1,16 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (Matrices.vcxproj, PremierShader.vcxproj, Rose.vcxproj, Rotation.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
-  OpenGLMaths.c
-c:\users\artj3\documents\cours\3a esgi\quaternion\openglmaths\openglmaths\openglmaths.c(101): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-c:\users\artj3\documents\cours\3a esgi\quaternion\openglmaths\openglmaths\openglmaths.c(110): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+LINK : warning LNK4098: conflit entre la bibliothèque par défaut 'LIBCMT' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+GLShader.obj : warning LNK4049: symbole défini localement __glewAttachShader importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewCompileShader importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewCreateProgram importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewCreateShader importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewDeleteProgram importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewDeleteShader importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewGetProgramInfoLog importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewGetProgramiv importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewGetShaderInfoLog importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewGetShaderiv importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewLinkProgram importé
+GLShader.obj : warning LNK4049: symbole défini localement __glewShaderSource importé
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' n'a pu être trouvé avec 'glew32s.lib(glew.obj)' ou sur 'C:\Users\artj3\Documents\Cours\3A ESGI\Quaternion\OpenGLMaths\x64\Debug\vc120.pdb' ; l'objet sera lié sans informations de débogage
   OpenGLMaths.vcxproj -> C:\Users\artj3\Documents\Cours\3A ESGI\Quaternion\OpenGLMaths\x64\Debug\OpenGLMaths.exe
