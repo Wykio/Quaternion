@@ -1,0 +1,5 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (Matrices.vcxproj, PremierShader.vcxproj, Rose.vcxproj, Rotation.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
+  OpenGLMaths.c
+c:\users\artj3\documents\cours\3a esgi\quaternion\openglmaths\openglmaths\openglmaths.c(101): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+c:\users\artj3\documents\cours\3a esgi\quaternion\openglmaths\openglmaths\openglmaths.c(110): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+  OpenGLMaths.vcxproj -> C:\Users\artj3\Documents\Cours\3A ESGI\Quaternion\OpenGLMaths\x64\Debug\OpenGLMaths.exe

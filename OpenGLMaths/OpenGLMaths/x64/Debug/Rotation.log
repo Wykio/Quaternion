@@ -1,0 +1,4 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (PremierShader.vcxproj, Rose.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
+  Rotation.c
+c:\users\artj3\documents\cours\3a esgi\opengl\rotation\rotation\rotation.c(103): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+  Rotation.vcxproj -> C:\Users\artj3\Documents\Cours\3A ESGI\OpenGL\Rotation\x64\Debug\Rotation.exe
