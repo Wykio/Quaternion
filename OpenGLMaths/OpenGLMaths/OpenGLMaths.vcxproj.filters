@@ -32,9 +32,20 @@
     <ClCompile Include="OpenGLMaths.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="LoaderOBJ.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Cube.fs.glsl" />
     <None Include="Cube.vs.glsl" />
+    <None Include="teapot.mtl">
+      <Filter>Fichiers sources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="teapot.obj">
+      <Filter>Fichiers sources</Filter>
+    </Object>
   </ItemGroup>
 </Project>
