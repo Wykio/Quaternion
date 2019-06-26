@@ -3,6 +3,7 @@
 
 // comme on link avec glew32s.lib (en static)
 // il faut forcer les bons includes egalement
+#pragma once
 #define GLEW_STATIC 1	
 #include <glew.h>
 
@@ -10,6 +11,8 @@
 
 #include "GLShader.h"
 #include <math.h>
+
+#include <glm/glm.hpp>
 
 int main(void)
 {
