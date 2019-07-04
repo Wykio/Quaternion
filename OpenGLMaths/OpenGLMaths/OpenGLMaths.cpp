@@ -3,7 +3,7 @@
 
 // comme on link avec glew32s.lib (en static)
 // il faut forcer les bons includes egalement
-#pragma once
+//#pragma once
 #define GLEW_STATIC 1	
 #include <glew.h>
 
@@ -11,21 +11,24 @@
 
 #include "GLShader.h"
 #include <math.h>
+#include <iostream>
 
-#include <glm/glm.hpp>
+#include "Matrix4.h"
+#include "Vec3.h"
+
 
 int main(void)
 {
 	GLFWwindow* window;
-	GLint width = 800;
-	GLint height = 600;
+	GLint windowWidth = 800;
+	GLint windowHeight = 600;
 
 	/* Initialize the library */
 	if (!glfwInit())
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(width, height, "OpenGLMaths", NULL, NULL);
+	window = glfwCreateWindow(windowWidth, windowHeight, "OpenGLMaths", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -99,29 +102,72 @@ int main(void)
 		GLint locTime = glGetUniformLocation(CubeProgram, "u_Time");
 		glUniform1f(locTime, time);
 
+
+		//Model matrix
+
+		//Translation
+		Matrix4 translationMatrix(
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+		);
+
+		//Rotation
+		Matrix4 rotationMatrix(
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+		);
+
+		//Scale
+		Matrix4 scaleMatrix(
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+		);
+
+		Matrix4 modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+
+		GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
+
+
+		//View matrix
+
+		//Position de la caméra
+		Vec3 eye = {
+			0, 0, -1
+		};
+
+		//Centre de l'objet regardé
+		Vec3 center = {
+			0, 0, 0
+		};
+		
+		Matrix4 viewMatrix = Matrix4::lookAt(eye, center, Vec3(0, 1, 0));
+
+		GLint viewLoc = glGetUniformLocation(CubeProgram, "viewMatrix");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, viewMatrix.m);
+
+
+		//Projection matrix
+
+		float fov = 90 * 3.14 / 180;
+		float aspectRatio = (float)windowWidth / (float)windowHeight;
+		float nearClipPlane = 0.1f;
+		float farClipPlane = 100.f;
+
 		//Matrice de rotation
-		float rotationMatrix[9] = 
-		{
-			1, 0, 0,
-			0, cos(time), -sin(time),
-			0, sin(time), cos(time)
-		};
+		Matrix4 projectionMatrix = Matrix4::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);
 
-		GLint matLoc = glGetUniformLocation(CubeProgram, "rotationMatrix");
-		glUniformMatrix3fv(matLoc, 1, GL_FALSE, rotationMatrix);
+		GLint projectionLoc = glGetUniformLocation(CubeProgram, "projectionMatrix");
+		glUniformMatrix3fv(projectionLoc, 1, GL_FALSE, projectionMatrix.m);
 
-		float identityMatrix[9] = {
-			cos(time), -sin(time), 0,
-			sin(time), cos(time), 0,
-			0, 0, 1
 
-		};
-
-		matLoc = glGetUniformLocation(CubeProgram, "identityMatrix");
-		glUniformMatrix3fv(matLoc, 1, GL_FALSE, identityMatrix);
-
-		// alternativement on peut modifier le "point size"
-		// dans le shader avec la variable gl_PointSize
+		//Draw
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, cube_elements);
 
 		/* Swap front and back buffers */

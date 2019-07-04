@@ -6,16 +6,17 @@ attribute vec4 a_Color;
 varying vec4 v_Color;
 
 uniform float u_Time;
-uniform float u_Random;
 
-uniform mat3 rotationMatrix;
-uniform mat3 identityMatrix;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 
 void main(void)
 {
 	v_Color = a_Color ;
 
-	vec3 newPosition = rotationMatrix * identityMatrix * a_Position;
+	//vec4 newPosition = projectionMatrix * viewMatrix * modelMatrix * vec4(a_Position, 1.0f);
+	vec4 newPosition = modelMatrix * vec4(a_Position, 1.0f);
 
-	gl_Position = vec4(newPosition, 1.0);
+	gl_Position = newPosition;
 }
