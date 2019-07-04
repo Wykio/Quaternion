@@ -15,6 +15,7 @@
 
 #include "Matrix4.h"
 #include "Vec3.h"
+#include "TextureLoader.h"
 
 
 int main(void)
@@ -47,6 +48,8 @@ int main(void)
 	LoadFragmentShader(CubeShader, "Cube.fs.glsl");
 	LinkProgram(CubeShader);
 
+	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -58,15 +61,15 @@ int main(void)
 
 		const GLfloat cube_vertices[] = 
 		{ // front 
-			-0.5, -0.5, 0.5, 1.0, 0.0, 0.0,
-			0.5, -0.5, 0.5, 1.0, 1.0, 1.0,
-			0.5, 0.5, 0.5, 0.0, 0.0, 1.0,
-			-0.5, 0.5, 0.5, 1.0, 1.0, 0.0,
+			-0.5, -0.5, 0.5, 1.0, 0.0, 0.0, 0.0, 1.0,
+			0.5, -0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0,
+			0.5, 0.5, 0.5, 0.0, 0.0, 1.0, 1.0, 0.0,
+			-0.5, 0.5, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0,
 			// back
-			-0.5, -0.5, -0.5, 1.0, 0.5, 0.0,
-			0.5, -0.5, -0.5, 0.0, 1.0, 0.0,
-			0.5, 0.5, -0.5, 1.0, 0.5, 0.0,
-			-0.5, 0.5, -0.5, 0.0, 1.0, 0.5
+			-0.5, -0.5, -0.5, 1.0, 0.5, 0.0, 0.0, 1.0,
+			0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
+			0.5, 0.5, -0.5, 1.0, 0.5, 0.0, 1.0, 0.0,
+			-0.5, 0.5, -0.5, 0.0, 1.0, 0.5, 0.0, 0.0,
 		};
 
 		const GLushort cube_elements[] =
@@ -91,16 +94,24 @@ int main(void)
 		glUseProgram(CubeProgram);
 
 		GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
-		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), cube_vertices);
+		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices);
 		glEnableVertexAttribArray(canalPos);
 
 		GLint canalColor = glGetAttribLocation(CubeProgram, "a_Color");
-		glVertexAttribPointer(canalColor, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), cube_vertices + 3);
+		glVertexAttribPointer(canalColor, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices + 3);
 		glEnableVertexAttribArray(canalColor);
+
+		GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
+		glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices + 6);
+		glEnableVertexAttribArray(canalUV);
 
 		float time = (float)glfwGetTime();
 		GLint locTime = glGetUniformLocation(CubeProgram, "u_Time");
 		glUniform1f(locTime, time);
+
+		GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
+		// et finalement on affecte une valeur concrete
+		glUniform1f(locTexture, texture);
 
 
 		//Model matrix
