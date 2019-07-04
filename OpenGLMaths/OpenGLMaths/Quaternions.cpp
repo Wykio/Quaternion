@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
+#include "Matrix4.h"
 
 
 Quaternions::Quaternions(float xi, float yi, float zi, float wi)
@@ -14,23 +15,24 @@ Quaternions::Quaternions(float xi, float yi, float zi, float wi)
         z = zi;
         w = wi;
 }
-float * MatrixVersion(Quaternions q)
-{
-    float qMat[16] =  { q.x, -q.y, -q.z, -q.w, q.y, q.x, -q.w, q.z, q.z, q.w, q.x, -q.y, q.w, -q.z, q.y, q.x};
-    return qMat;
-}
 
 Quaternions::~Quaternions()
 {
-    //dtor
+	//dtor
 }
+
+Matrix4 MatrixVersion(Quaternions q)
+{
+	return Matrix4(q.x, -q.y, -q.z, -q.w, q.y, q.x, -q.w, q.z, q.z, q.w, q.x, -q.y, q.w, -q.z, q.y, q.x);
+}
+
+//TODO : matrice to quaternion
 
 Quaternions GetqConj(Quaternions q)
 {
     Quaternions qConj(q.x, -q.y, -q.z, -q.w);
     return qConj;
 }
-
 
 //calcule de la norme
 float Norme(Quaternions q)

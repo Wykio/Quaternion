@@ -16,7 +16,7 @@ void main(void)
 	v_Color = a_Color ;
 
 	//vec4 newPosition = projectionMatrix * viewMatrix * modelMatrix * vec4(a_Position, 1.0f);
-	vec4 newPosition = modelMatrix * vec4(a_Position, 1.0f);
+	vec4 newPosition = viewMatrix * modelMatrix * vec4(a_Position, 1.0f);
 
 	gl_Position = newPosition;
 }

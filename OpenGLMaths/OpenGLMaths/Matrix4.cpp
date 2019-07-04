@@ -20,40 +20,64 @@ Matrix4 Matrix4::operator*(Matrix4 b)
 }
 
 //Calcule la matrice de vue
-Matrix4 Matrix4::lookAt(Vec3 eye, Vec3 center, Vec3 up)
+// right.x    right.y    right.z    0
+// up.x       up.y       up.z       0
+// forward.x  forward.y  forward.z  0
+// 0          0          0          1
+Matrix4 Matrix4::lookAt(Vec3 eye, Vec3 center, Vec3 tmp)
 {
 	//vecteur eye -> center
-	Vec3 zAxis = (eye - center).normalised();
-	Vec3 xAxis = (up ^ zAxis).normalised();
-	Vec3 yAxis = zAxis ^ xAxis;
+	Vec3 forward = (eye - center).normalise();
+	Vec3 right = tmp.normalise() ^ forward;
+	Vec3 up = forward ^ right;
 
-	Matrix4 orientation = Matrix4(
-		xAxis.x, xAxis.y, xAxis.z, -xAxis.dot(eye),
-		yAxis.x, yAxis.y, yAxis.z, -yAxis.dot(eye),
-		zAxis.x, zAxis.y, zAxis.z, -zAxis.dot(eye),
-		0, 0, 0, 1
+	Matrix4 viewMatrix = Matrix4();
+		
+	viewMatrix.col0[0] = right.x;
+	viewMatrix.col1[0] = right.y;
+	viewMatrix.col2[0] = right.z;
+	viewMatrix.col0[1] = up.x;
+	viewMatrix.col1[1] = up.y;
+	viewMatrix.col2[1] = up.z;
+	viewMatrix.col0[2] = forward.x;
+	viewMatrix.col1[2] = forward.y;
+	viewMatrix.col2[2] = forward.z;
+	viewMatrix.col0[3] = eye.x;
+	viewMatrix.col1[3] = eye.y;
+	viewMatrix.col2[3] = eye.z;
 
-	);
-
-	return orientation;
+	return viewMatrix;
 }
 
 //Calcule la matrice de projection
-Matrix4 Matrix4::perspective(float fov, float aspectRatio, float nearClipPlane, float farClipPlane)
+Matrix4 Matrix4::perspective(float fov, float aspectRatio, float near, float far)
 {
-	float t = tan((fov * 3.14 / 180) * 0.5) * nearClipPlane; //top
-	float b = -t; //bottom
-	float r = aspectRatio * t; //right
-	float l = -r; //left
-
+	float scale = tan(fov * 0.5 * 3.14 / 180) * near;
+	float r = aspectRatio * scale;
+	float l = -r;
+	float t = scale;
+	float b = -t;
+	
 	Matrix4 Result = loadZeroMatrix();
-	Result.col0[0] = (2 ) / (r - l); ;
-	Result.col1[1] = (2 ) / (t - b);
-	Result.col2[2] = -2 / (farClipPlane - nearClipPlane);
-	Result.col3[0] = -(r + l) / (r - l);
-	Result.col3[1] = -(t + b) / (t - b);
-	Result.col3[2] = -(farClipPlane + nearClipPlane) / (farClipPlane - nearClipPlane);
-	Result.col3[3] = 1;
+	Result.col0[0] = 2 * near / (r - l);
+	Result.col1[0] = 0;
+	Result.col2[0] = 0;
+	Result.col3[0] = 0;
+
+	Result.col0[1] = 0;
+	Result.col1[1] = 2 * near / (t - b);
+	Result.col2[1] = 0;
+	Result.col3[1] = 0;
+
+	Result.col0[2] = (r + l) / (r - l);
+	Result.col1[2] = (t + b) / (t - b);
+	Result.col2[2] = -(far + near) / (far - near);
+	Result.col3[2] = -1;
+
+	Result.col0[3] = 0;
+	Result.col1[3] = 0;
+	Result.col2[3] = -2 * far * near / (far - near);
+	Result.col3[3] = 0;
 
 	return Result;
 }
