@@ -38,15 +38,17 @@ bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<fl
 	{
 		char ch[128];
 		int res = fscanf(fp, "%s", ch);
+
 		if (res == EOF)
 			break;
 
 
-		if (ch == "v")
+		if (strcmp(ch,"v") == 0)
 		{
 			Vec3 vertex;
 			fscanf(fp, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
 			tempVertices.push_back(vertex);
+			printf("dans v");
 		}
 		else if (ch == "vt")
 		{
@@ -80,6 +82,7 @@ bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<fl
 			normalIndices.push_back(normalIndex[1]);
 			normalIndices.push_back(normalIndex[2]);
 		}
+
 	}
 
 	for (unsigned int i = 0; i < vertexIndices.size(); i++)
@@ -92,6 +95,7 @@ bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<fl
 		Vec2 uvs = tempUvs[uvIndex - 1];
 		Vec3 normal = tempNormals[normalIndex - 1];
 		
+		out_indices.push_back(vertexIndices[i]);
 		out_vertices.push_back(vertex.x);
 		out_vertices.push_back(vertex.y);
 		out_vertices.push_back(vertex.z);
