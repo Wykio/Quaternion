@@ -36,6 +36,12 @@
     <ClInclude Include="stb_image.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjImporter.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -54,6 +60,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="TextureLoader.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjImporter.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
