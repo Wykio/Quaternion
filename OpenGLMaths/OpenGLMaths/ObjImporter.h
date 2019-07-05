@@ -11,7 +11,7 @@ bool loadObj(
 	std::vector<float> & out_vertices,
 	std::vector<float> & out_uvs,
 	std::vector<float> & out_normals,
-	std::vector<float> & out_indices
+	std::vector<int> & out_indices
 );
 
 #endif

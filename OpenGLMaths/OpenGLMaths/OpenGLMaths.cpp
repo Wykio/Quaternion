@@ -16,7 +16,7 @@
 #include "Quaternions.h"
 #include "Matrix4.h"
 #include "Vec3.h"
-
+#include "ObjImporter.h"
 
 
 int main(void)
@@ -59,7 +59,7 @@ int main(void)
 	};
 
 	//Cube indices
-	const GLushort cube_elements[] =
+	const GLuint cube_elements[] =
 	{
 		//Face avant    
 		0, 1, 3,  3, 1, 2,
@@ -84,6 +84,13 @@ int main(void)
 	GLuint CubeProgram = CubeShader._Program;
 	glUseProgram(CubeProgram);
 
+	//load obj
+	std::vector< float > vertices;
+	std::vector< float > uvs;
+	std::vector< float > normals;
+	std::vector< int > indices;
+	bool res = loadObj("cube.obj", vertices, uvs, normals, indices);
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -92,7 +99,7 @@ int main(void)
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glEnable(GL_CULL_FACE); 
-		
+		/*
 		// Attributes
 		GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
 		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), cube_vertices);
@@ -173,6 +180,11 @@ int main(void)
 
 		//Draw
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, cube_elements);
+		*/
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices);
+		glEnableVertexAttribArray(0);
+		//TODO: récupérer tableau d'indices
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, &indices);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

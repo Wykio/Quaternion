@@ -11,7 +11,7 @@
 #include "ObjImporter.h"
 
 
-bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<float>& out_uvs, std::vector<float>& out_normals, std::vector<float>& out_indices)
+bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<float>& out_uvs, std::vector<float>& out_normals, std::vector<int>& out_indices)
 {
 	FILE *fp;
 	int read;
@@ -48,22 +48,21 @@ bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<fl
 			Vec3 vertex;
 			fscanf(fp, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
 			tempVertices.push_back(vertex);
-			printf("dans v");
 		}
-		else if (ch == "vt")
+		else if (strcmp(ch, "vt") == 0)
 		{
 			Vec2 uvs;
 			fscanf(fp, "%f %f, \n", &uvs.x, &uvs.y);
 			tempUvs.push_back(uvs);
 
 		}
-		else if (ch =="vn")
+		else if (strcmp(ch, "vn") == 0)
 		{
 			Vec3 normal;
 			fscanf(fp, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
 			tempNormals.push_back(normal);
 		}
-		else if (ch == "f")
+		else if (strcmp(ch, "f") == 0)
 		{
 			std::string vertex1, vertex2, vertex3;
 			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
