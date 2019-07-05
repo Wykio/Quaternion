@@ -48,15 +48,15 @@ int main(void)
 	const GLfloat cube_vertices[] =
 	{   // Positions           // Couleurs
 		//Face avant    
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f, //inf gauche rouge
-		 0.5f, -0.5f,  0.5f,   0.0f, 1.0f, 0.0f, //inf droit  vert
-		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f, //sup droit  jaune
-		-0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f, //sup gauche bleu
+		-0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f,	0.0f, 0.0f,//inf gauche rouge 
+		 0.5f, -0.5f,  0.5f,   0.0f, 1.0f, 0.0f,	1.0f, 0.0f,//inf droit  vert
+		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f,	1.0f, 1.0f,//sup droit  jaune
+		-0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,	0.0f, 1.0f,//sup gauche bleu
 		//Face arri�re    
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 1.0f, //inf gauche magenta
-		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 1.0f, //inf droit  cyan
-		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f, //sup droit  blanc 
-		-0.5f,  0.5f, -0.5f,   0.5f, 0.5f, 0.5f  //sup gauche gris
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 1.0f,	0.0f, 0.0f, //inf gauche magenta
+		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 1.0f,	1.0f, 0.0f,//inf droit  cyan
+		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,	1.0f, 1.0f,//sup droit  blanc 
+		-0.5f,  0.5f, -0.5f,   0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//sup gauche gris
 	};
 
 	//Cube indices
@@ -147,7 +147,7 @@ int main(void)
 			0, 0, 0, 1
 		);
 
-		Matrix4 modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+		Matrix4 modelMatrix = translationMatrix * scaleMatrix * rotationMatrix;
 
 		GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
