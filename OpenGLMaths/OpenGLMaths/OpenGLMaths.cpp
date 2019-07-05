@@ -1,4 +1,4 @@
-// Rotation.c : définit le point d'entrée pour l'application console.
+// Rotation.cï¿½: dï¿½finit le point d'entrï¿½e pour l'application console.
 //
 
 // comme on link avec glew32s.lib (en static)
@@ -13,9 +13,11 @@
 #include <math.h>
 #include <iostream>
 
+#include "Quaternions.h"
 #include "Matrix4.h"
 #include "Vec3.h"
 #include "TextureLoader.h"
+
 
 
 int main(void)
@@ -42,11 +44,46 @@ int main(void)
 	// INITIALISATION
 	glewInit();
 
+	//Cube coordonnï¿½es
+	const GLfloat cube_vertices[] =
+	{   // Positions           // Couleurs
+		//Face avant    
+		-0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f, //inf gauche rouge
+		 0.5f, -0.5f,  0.5f,   0.0f, 1.0f, 0.0f, //inf droit  vert
+		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f, //sup droit  jaune
+		-0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f, //sup gauche bleu
+		//Face arriï¿½re    
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 1.0f, //inf gauche magenta
+		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 1.0f, //inf droit  cyan
+		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f, //sup droit  blanc 
+		-0.5f,  0.5f, -0.5f,   0.5f, 0.5f, 0.5f  //sup gauche gris
+	};
+
+	//Cube indices
+	const GLushort cube_elements[] =
+	{
+		//Face avant    
+		0, 1, 3,  3, 1, 2,
+		//Face droite
+		2, 1, 5,  2, 5, 6,
+		//Face arriï¿½re
+		6, 5, 4,  6, 4, 7,
+		//Face gauche
+		7, 4, 0,  7, 0, 3,
+		//Face haut
+		3, 2, 7,  7, 2, 6,
+		//Face bas
+		4, 5, 0,  0, 5, 1
+	};
+
+	//Crï¿½ation du programme
 	GLShader CubeShader;
 	CreateProgram(&CubeShader);
 	LoadVertexShader(CubeShader, "Cube.vs.glsl");
 	LoadFragmentShader(CubeShader, "Cube.fs.glsl");
 	LinkProgram(CubeShader);
+	GLuint CubeProgram = CubeShader._Program;
+	glUseProgram(CubeProgram);
 
 	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
 
@@ -54,45 +91,12 @@ int main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glEnable(GL_CULL_FACE);
-
-
-		const GLfloat cube_vertices[] = 
-		{ // front 
-			-0.5, -0.5, 0.5, 1.0, 0.0, 0.0, 0.0, 1.0,
-			0.5, -0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0,
-			0.5, 0.5, 0.5, 0.0, 0.0, 1.0, 1.0, 0.0,
-			-0.5, 0.5, 0.5, 1.0, 1.0, 0.0, 0.0, 0.0,
-			// back
-			-0.5, -0.5, -0.5, 1.0, 0.5, 0.0, 0.0, 1.0,
-			0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-			0.5, 0.5, -0.5, 1.0, 0.5, 0.0, 1.0, 0.0,
-			-0.5, 0.5, -0.5, 0.0, 1.0, 0.5, 0.0, 0.0,
-		};
-
-		const GLushort cube_elements[] =
-		{
-			// front
-			0, 1, 2, 2, 3, 0,
-			// right
-			1, 5, 6, 6, 2, 1,
-			// back
-			7, 6, 5, 5, 4, 7,
-			// left
-			4, 0, 3, 3, 7, 4,
-			// bottom
-			4, 5, 1, 1, 0, 4,
-			// top
-			3, 2, 6,6, 7, 3
-		};
-
-		// glUseProgram rend un programme actif
-		// une valeur de '0' remet le programme par defaut
-		GLuint CubeProgram = CubeShader._Program;
-		glUseProgram(CubeProgram);
-
+		glEnable(GL_DEPTH_TEST);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glEnable(GL_CULL_FACE); 
+		
+		// Attributes
 		GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
 		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices);
 		glEnableVertexAttribArray(canalPos);
@@ -105,10 +109,13 @@ int main(void)
 		glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices + 6);
 		glEnableVertexAttribArray(canalUV);
 
+		//Temps
 		float time = (float)glfwGetTime();
 		GLint locTime = glGetUniformLocation(CubeProgram, "u_Time");
 		glUniform1f(locTime, time);
 
+		//-----------------Model matrix----------------------------
+		//ATTENTION LES MATRICES C'EST EN VERTICAL
 		GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
 		// et finalement on affecte une valeur concrete
 		glUniform1f(locTexture, texture);
@@ -121,14 +128,14 @@ int main(void)
 			1, 0, 0, 0,
 			0, 1, 0, 0,
 			0, 0, 1, 0,
-			0, 0, 0, 1
+			0, 0, -0.5, 1
 		);
 
 		//Rotation
 		Matrix4 rotationMatrix(
 			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
+			0,cos(time), sin(time), 0,
+			0, -sin(time), cos(time), 0,
 			0, 0, 0, 1
 		);
 
@@ -145,38 +152,38 @@ int main(void)
 		GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
 
+		//-----------------------View matrix------------------------------
 
-		//View matrix
-
-		//Position de la caméra
+		//Position de la camï¿½ra
 		Vec3 eye = {
-			0, 0, -1
+		0, 0, -1
 		};
 
-		//Centre de l'objet regardé
+		//Centre de l'objet regardï¿½
 		Vec3 center = {
 			0, 0, 0
 		};
-		
-		Matrix4 viewMatrix = Matrix4::lookAt(eye, center, Vec3(0, 1, 0));
+
+		Matrix4 viewMatrix = Matrix4::lookAt(eye, center, Vec3(0, -1, 0));
 
 		GLint viewLoc = glGetUniformLocation(CubeProgram, "viewMatrix");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, viewMatrix.m);
 
 
-		//Projection matrix
+		//------------------------Projection matrix-------------------------------
 
 		float fov = 90 * 3.14 / 180;
 		float aspectRatio = (float)windowWidth / (float)windowHeight;
-		float nearClipPlane = 0.1f;
-		float farClipPlane = 100.f;
+		float nearClipPlane = 0.01f;
+		float farClipPlane = 1000.f;
 
 		//Matrice de rotation
 		Matrix4 projectionMatrix = Matrix4::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);
 
 		GLint projectionLoc = glGetUniformLocation(CubeProgram, "projectionMatrix");
-		glUniformMatrix3fv(projectionLoc, 1, GL_FALSE, projectionMatrix.m);
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, projectionMatrix.m);
 
+		Matrix4 test = projectionMatrix * viewMatrix * modelMatrix * Matrix4(-0.5f, -0.5f, 0.5f, 1.0f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 		//Draw
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, cube_elements);

@@ -59,7 +59,7 @@ struct Matrix4
 	Matrix4 operator*(Matrix4 b);
 
 	//Calcule la matrice de vue
-	static Matrix4 lookAt(Vec3 eye, Vec3 center, Vec3 up);
+	static Matrix4 lookAt(Vec3 eye, Vec3 center, Vec3 tmp);
 
 	//Calcule la matrice de projection
 	static Matrix4 perspective(float fov, float aspectRatio, float nearClipPlane, float farClipPlane);
