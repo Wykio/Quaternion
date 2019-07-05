@@ -16,13 +16,9 @@
 #include "Quaternions.h"
 #include "Matrix4.h"
 #include "Vec3.h"
-<<<<<<< HEAD
+
 #include "ObjImporter.h"
-=======
 #include "TextureLoader.h"
-
->>>>>>> 3f524a9ff26331369df5f4e13f6ce12aba551ad2
-
 
 int main(void)
 {
@@ -89,16 +85,13 @@ int main(void)
 	GLuint CubeProgram = CubeShader._Program;
 	glUseProgram(CubeProgram);
 
-<<<<<<< HEAD
 	//load obj
 	std::vector< float > vertices;
 	std::vector< float > uvs;
 	std::vector< float > normals;
 	std::vector< int > indices;
 	bool res = loadObj("cube.obj", vertices, uvs, normals, indices);
-=======
 	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
->>>>>>> 3f524a9ff26331369df5f4e13f6ce12aba551ad2
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -204,7 +197,7 @@ int main(void)
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices);
 		glEnableVertexAttribArray(0);
 		//TODO: récupérer tableau d'indices
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, &indices);
+		//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, &indices);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
