@@ -11,7 +11,7 @@
 #include "ObjImporter.h"
 
 
-bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<float>& out_uvs, std::vector<float>& out_normals, std::vector<int>& out_indices)
+bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<float>& out_uvs, std::vector<float>& out_normals, std::vector<unsigned int>& out_indices)
 {
 	FILE *fp;
 	int read;
@@ -64,22 +64,26 @@ bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<fl
 		}
 		else if (strcmp(ch, "f") == 0)
 		{
-			std::string vertex1, vertex2, vertex3;
-			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-			int matches = fscanf(fp, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
-			if (matches != 9) {
+			std::string vertex1, vertex2, vertex3, vertex4;
+			unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
+			int matches = fscanf(fp, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2], &vertexIndex[3], &uvIndex[3], &normalIndex[3]);
+			if (matches != 12) {
 				printf("It's not an obj file\n");
 				return false;
 			}
+			
 			vertexIndices.push_back(vertexIndex[0]);
 			vertexIndices.push_back(vertexIndex[1]);
 			vertexIndices.push_back(vertexIndex[2]);
+			vertexIndices.push_back(vertexIndex[3]);
 			uvIndices.push_back(uvIndex[0]);
 			uvIndices.push_back(uvIndex[1]);
 			uvIndices.push_back(uvIndex[2]);
+			uvIndices.push_back(uvIndex[3]);
 			normalIndices.push_back(normalIndex[0]);
 			normalIndices.push_back(normalIndex[1]);
 			normalIndices.push_back(normalIndex[2]);
+			normalIndices.push_back(normalIndex[3]);
 		}
 
 	}
@@ -94,7 +98,7 @@ bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<fl
 		Vec2 uvs = tempUvs[uvIndex - 1];
 		Vec3 normal = tempNormals[normalIndex - 1];
 		
-		out_indices.push_back(vertexIndices[i]);
+		//out_indices.push_back(vertexIndices[i]);
 		out_vertices.push_back(vertex.x);
 		out_vertices.push_back(vertex.y);
 		out_vertices.push_back(vertex.z);
@@ -104,4 +108,11 @@ bool loadObj(const char * path, std::vector<float>& out_vertices, std::vector<fl
 		out_normals.push_back(normal.y);
 		out_normals.push_back(normal.z);
 	}
+
+	//out_indices.push_back(vertexIndices);
+
+	//efface le contenue
+	out_indices.clear();
+
+	out_indices = vertexIndices;
 }
