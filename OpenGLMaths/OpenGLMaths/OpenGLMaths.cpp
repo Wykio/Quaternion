@@ -12,6 +12,8 @@
 #include "GLShader.h"
 #include <math.h>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm\gtx\transform.hpp>
 
 #include "Quaternions.h"
 #include "Matrix4.h"
@@ -44,7 +46,7 @@ int main(void)
 	// INITIALISATION
 	glewInit();
 
-	//Cube coordonnï¿½es
+	//Cube coordonnées
 	const GLfloat cube_vertices[] =
 	{   // Positions           // Couleurs
 		//Face avant    
@@ -60,7 +62,7 @@ int main(void)
 	};
 
 	//Cube indices
-	const GLuint cube_elements[] =
+	const GLushort cube_indices[] =
 	{
 		//Face avant    
 		0, 1, 3,  3, 1, 2,
@@ -89,22 +91,20 @@ int main(void)
 	std::vector< float > vertices;
 	std::vector< float > uvs;
 	std::vector< float > normals;
-	std::vector< int > indices;
-	bool res = loadObj("cube.obj", vertices, uvs, normals, indices);
+	std::vector< unsigned int > indices;
+	bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
 	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//glEnable(GL_CULL_FACE); 
-		/*
+		
 		// Attributes
 		GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
-		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices);
+		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
 		glEnableVertexAttribArray(canalPos);
 
 		GLint canalColor = glGetAttribLocation(CubeProgram, "a_Color");
@@ -112,7 +112,7 @@ int main(void)
 		glEnableVertexAttribArray(canalColor);
 
 		GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
-		glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices + 6);
+		glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
 		glEnableVertexAttribArray(canalUV);
 
 		//Temps
@@ -120,13 +120,12 @@ int main(void)
 		GLint locTime = glGetUniformLocation(CubeProgram, "u_Time");
 		glUniform1f(locTime, time);
 
-		//-----------------Model matrix----------------------------
-		//ATTENTION LES MATRICES C'EST EN VERTICAL
 		GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
-		// et finalement on affecte une valeur concrete
 		glUniform1f(locTexture, texture);
 
-
+		//-----------------Model matrix----------------------------
+		//ATTENTION LES MATRICES C'EST EN VERTICAL
+		
 		//Model matrix
 
 		//Translation
@@ -134,13 +133,13 @@ int main(void)
 			1, 0, 0, 0,
 			0, 1, 0, 0,
 			0, 0, 1, 0,
-			0, 0, -0.5, 1
+			0, 0, 5, 1
 		);
 
 		//Rotation
 		Matrix4 rotationMatrix(
 			1, 0, 0, 0,
-			0,cos(time), sin(time), 0,
+			0, cos(time), sin(time), 0,
 			0, -sin(time), cos(time), 0,
 			0, 0, 0, 1
 		);
@@ -153,7 +152,7 @@ int main(void)
 			0, 0, 0, 1
 		);
 
-		Matrix4 modelMatrix = translationMatrix * scaleMatrix * rotationMatrix;
+		Matrix4 modelMatrix = translationMatrix * rotationMatrix * scaleMatrix ;
 
 		GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
@@ -161,43 +160,38 @@ int main(void)
 		//-----------------------View matrix------------------------------
 
 		//Position de la camï¿½ra
-		Vec3 eye = {
+		/*Vec3 eye = {
 		0, 0, -1
 		};
 
 		//Centre de l'objet regardï¿½
 		Vec3 center = {
 			0, 0, 0
-		};
+		};*/
 
-		Matrix4 viewMatrix = Matrix4::lookAt(eye, center, Vec3(0, -1, 0));
+		//Matrix4 viewMatrix = Matrix4::lookAt(eye, center, Vec3(0, 1, 0));
 
+		glm::mat4 view = glm::lookAt(glm::vec3(0, 0, -1), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 		GLint viewLoc = glGetUniformLocation(CubeProgram, "viewMatrix");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, viewMatrix.m);
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 
 
 		//------------------------Projection matrix-------------------------------
 
-		float fov = 90 * 3.14 / 180;
+		float fov = 45 * (3.14 / 180);
 		float aspectRatio = (float)windowWidth / (float)windowHeight;
 		float nearClipPlane = 0.01f;
 		float farClipPlane = 1000.f;
 
 		//Matrice de rotation
-		Matrix4 projectionMatrix = Matrix4::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);
-
+		//Matrix4 projectionMatrix = Matrix4::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);
+		glm::mat4 projection = glm::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);
 		GLint projectionLoc = glGetUniformLocation(CubeProgram, "projectionMatrix");
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, projectionMatrix.m);
-
-		Matrix4 test = projectionMatrix * viewMatrix * modelMatrix * Matrix4(-0.5f, -0.5f, 0.5f, 1.0f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
 		//Draw
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, cube_elements);
-		*/
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices);
-		glEnableVertexAttribArray(0);
-		//TODO: récupérer tableau d'indices
-		//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, &indices);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
+		
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
