@@ -21,6 +21,7 @@
 
 #include "ObjImporter.h"
 #include "TextureLoader.h"
+#include "Input.h"
 
 int main(void)
 {
@@ -46,38 +47,6 @@ int main(void)
 	// INITIALISATION
 	glewInit();
 
-	//Cube coordonnées
-	const GLfloat cube_vertices[] =
-	{   // Positions           // Couleurs
-		//Face avant    
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f,	0.0f, 0.0f,//inf gauche rouge 
-		 0.5f, -0.5f,  0.5f,   0.0f, 1.0f, 0.0f,	1.0f, 0.0f,//inf droit  vert
-		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f,	1.0f, 1.0f,//sup droit  jaune
-		-0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,	0.0f, 1.0f,//sup gauche bleu
-		//Face arriï¿½re    
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 1.0f,	0.0f, 0.0f, //inf gauche magenta
-		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 1.0f,	1.0f, 0.0f,//inf droit  cyan
-		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 1.0f,	1.0f, 1.0f,//sup droit  blanc 
-		-0.5f,  0.5f, -0.5f,   0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//sup gauche gris
-	};
-
-	//Cube indices
-	const GLushort cube_indices[] =
-	{
-		//Face avant    
-		0, 1, 3,  3, 1, 2,
-		//Face droite
-		2, 1, 5,  2, 5, 6,
-		//Face arriï¿½re
-		6, 5, 4,  6, 4, 7,
-		//Face gauche
-		7, 4, 0,  7, 0, 3,
-		//Face haut
-		3, 2, 7,  7, 2, 6,
-		//Face bas
-		4, 5, 0,  0, 5, 1
-	};
-
 	//Crï¿½ation du programme
 	GLShader CubeShader;
 	CreateProgram(&CubeShader);
@@ -93,7 +62,25 @@ int main(void)
 	std::vector< float > normals;
 	std::vector< unsigned int > indices;
 	bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
+
+	//Texture
 	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
+	GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
+	glUniform1f(locTexture, texture);
+
+	//Inputs
+	Input input = Input();
+	input.lastTime = glfwGetTime();
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+	// Attributes
+	GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
+	glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
+	glEnableVertexAttribArray(canalPos);
+
+	GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
+	glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
+	glEnableVertexAttribArray(canalUV);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -101,27 +88,15 @@ int main(void)
 		/* Render here */
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		// Attributes
-		GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
-		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
-		glEnableVertexAttribArray(canalPos);
-
-		GLint canalColor = glGetAttribLocation(CubeProgram, "a_Color");
-		glVertexAttribPointer(canalColor, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), cube_vertices + 3);
-		glEnableVertexAttribArray(canalColor);
-
-		GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
-		glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
-		glEnableVertexAttribArray(canalUV);
+		glfwSwapInterval(0);
 
 		//Temps
 		float time = (float)glfwGetTime();
 		GLint locTime = glGetUniformLocation(CubeProgram, "u_Time");
 		glUniform1f(locTime, time);
 
-		GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
-		glUniform1f(locTexture, texture);
+		//----------------Matrix-----------------------------
+		input.computeMatricesFromInputs(window, windowWidth, windowHeight);
 
 		//-----------------Model matrix----------------------------
 		//ATTENTION LES MATRICES C'EST EN VERTICAL
@@ -133,7 +108,7 @@ int main(void)
 			1, 0, 0, 0,
 			0, 1, 0, 0,
 			0, 0, 1, 0,
-			0, 0, 5, 1
+			0, 0, 0, 1
 		);
 
 		//Rotation
@@ -171,27 +146,25 @@ int main(void)
 
 		//Matrix4 viewMatrix = Matrix4::lookAt(eye, center, Vec3(0, 1, 0));
 
-		glm::mat4 view = glm::lookAt(glm::vec3(0, 0, -1), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		glm::mat4 view = input.getViewMatrix();
 		GLint viewLoc = glGetUniformLocation(CubeProgram, "viewMatrix");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 
 
 		//------------------------Projection matrix-------------------------------
 
-		float fov = 45 * (3.14 / 180);
+		/*float fov = 45 * (3.14 / 180);
 		float aspectRatio = (float)windowWidth / (float)windowHeight;
 		float nearClipPlane = 0.01f;
 		float farClipPlane = 1000.f;
 
-		//Matrice de rotation
-		//Matrix4 projectionMatrix = Matrix4::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);
-		glm::mat4 projection = glm::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);
+		Matrix4 projectionMatrix = Matrix4::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);*/
+		glm::mat4 projection = input.getProjectionMatrix();
 		GLint projectionLoc = glGetUniformLocation(CubeProgram, "projectionMatrix");
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
 		//Draw
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
-		
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -199,6 +172,8 @@ int main(void)
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
+
+	glDeleteTextures(1, &texture);
 
 	DestroyProgram(&CubeShader);
 

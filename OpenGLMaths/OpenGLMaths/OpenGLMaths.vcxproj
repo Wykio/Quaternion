@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GLShader.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="ObjImporter.h" />
     <ClInclude Include="pch.h" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLShader.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="ObjImporter.cpp" />
     <ClCompile Include="pch.cpp">
