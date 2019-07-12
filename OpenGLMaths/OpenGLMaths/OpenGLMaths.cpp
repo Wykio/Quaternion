@@ -18,6 +18,7 @@
 #include "Quaternions.h"
 #include "Matrix4.h"
 #include "Vec3.h"
+#include "Vec2.h"
 
 #include "ObjImporter.h"
 #include "TextureLoader.h"
@@ -70,7 +71,7 @@ int main(void)
 	bool res2 = loadObj("cube.obj", vertices2, uvs2, normals2, indices2);
 
 	//Texture
-	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
+	GLuint texture = LoadAndCreateTextureRGBA("../Textures/Debug.jpg");
 	GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
 	glUniform1f(locTexture, texture);
 
