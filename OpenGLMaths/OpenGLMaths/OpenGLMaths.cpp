@@ -67,7 +67,7 @@ int main(void)
 	std::vector< float > normals2;
 	std::vector< unsigned int > indices2;
 	//bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
-	bool res2 = loadObj("cube.obj", vertices2, uvs2, normals2, indices2);
+	bool res2 = loadObj("teapot.obj", vertices2, uvs2, normals2, indices2);
 
 	//Texture
 	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
@@ -173,8 +173,7 @@ int main(void)
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
 		//Draw
-		//glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
-		glDrawElements(GL_TRIANGLES, indices2.size(), GL_UNSIGNED_INT, &indices2[0]);
+		glDrawArrays(GL_TRIANGLES, 0, vertices2.size() / 3);
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
@@ -183,7 +182,6 @@ int main(void)
 	}
 
 	glDeleteTextures(1, &texture);
-
 	DestroyProgram(&CubeShader);
 
 	glfwTerminate();
