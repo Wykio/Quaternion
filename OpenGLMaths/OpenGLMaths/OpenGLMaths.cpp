@@ -63,12 +63,7 @@ int main(void)
 	std::vector< float > normals;
 	std::vector< unsigned int > indices;
 
-	std::vector< float > vertices2;
-	std::vector< float > uvs2;
-	std::vector< float > normals2;
-	std::vector< unsigned int > indices2;
-	//bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
-	bool res2 = loadObj("cube.obj", vertices2, uvs2, normals2, indices2);
+	bool chaise = loadObj("models/scene.obj", vertices, uvs, normals, indices);
 
 	//Texture
 	GLuint texture = LoadAndCreateTextureRGBA("../Textures/Debug.jpg");
@@ -83,13 +78,13 @@ int main(void)
 	// Attributes
 	GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
 	//glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
-	glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices2[0]);
+	glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
 	glEnableVertexAttribArray(canalPos);
 
 
 	GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
 	//glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
-	glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs2[0]);
+	glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
 	glEnableVertexAttribArray(canalUV);
 
 	/* Loop until the user closes the window */
@@ -137,7 +132,7 @@ int main(void)
 			0, 0, 0, 1
 		);
 
-		Matrix4 modelMatrix = translationMatrix * rotationMatrix * scaleMatrix ;
+		Matrix4 modelMatrix = translationMatrix * scaleMatrix ;
 
 		GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
@@ -175,7 +170,8 @@ int main(void)
 
 		//Draw
 		//glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
-		glDrawElements(GL_TRIANGLES, indices2.size(), GL_UNSIGNED_INT, &indices2[0]);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
+
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
