@@ -74,9 +74,9 @@ Quaternions Location (Quaternions q, float *rotationAxes, float angle)
 }
 
 //matrice de rotation
-float *rotationMatrix(Quaternions q)
+Matrix4 rotationMatrix(Quaternions q)
 {
-    float rotationMat[16] = {1- 2*pow(q.y, 2) -2*pow(q.z, 2), 2*q.x * q.y-2*q.w*q.z, 2 * q.x* q.z+2*q.w*q.y, 0,
+    Matrix4 rotationMat = {1- 2*pow(q.y, 2) -2*pow(q.z, 2), 2*q.x * q.y-2*q.w*q.z, 2 * q.x* q.z+2*q.w*q.y, 0,
                                               2*q.x*q.y+2*q.w*q.z, 1-2*pow(q.x, 2)-2*pow(q.z, 2), 2*q.y*q.z+2*q.w*q.x, 0,
                                               2*q.x*q.z-2*q.w*q.y, 2*q.y*q.z-2*q.w*q.x, 1-2*pow(q.x, 2)-2*pow(q.y, 2), 0,
                                               0, 0, 0 ,1};
