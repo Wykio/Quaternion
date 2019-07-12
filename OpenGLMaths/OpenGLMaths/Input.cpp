@@ -55,6 +55,10 @@ void Input::computeMatricesFromInputs(GLFWwindow* win, GLint winWidth, GLint win
 	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) {
 		horizontalAngle += mouseSpeed * deltaTime * float(winWidth / 2 - 100);
 	}
+	if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		glfwDestroyWindow(win);
+		exit(0);
+	}
 	
 	direction = glm::vec3(
 		cos(verticalAngle) * sin(horizontalAngle),
