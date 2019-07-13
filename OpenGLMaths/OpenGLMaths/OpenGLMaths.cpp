@@ -67,7 +67,7 @@ int main(void)
 	std::vector< float > normals2;
 	std::vector< unsigned int > indices2;
 	//bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
-	bool res2 = loadObj("teapot.obj", vertices2, uvs2, normals2, indices2);
+	bool res2 = loadObj("models/scene.obj", vertices2, uvs2, normals2, indices2);
 
 	//Texture
 	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
@@ -136,7 +136,7 @@ int main(void)
 			0, 0, 0, 1
 		);
 
-		Matrix4 modelMatrix = translationMatrix * rotationMatrix * scaleMatrix ;
+		Matrix4 modelMatrix = translationMatrix * scaleMatrix ;// * rotationMatrix
 
 		GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
