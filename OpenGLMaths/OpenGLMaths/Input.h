@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm\gtx\transform.hpp>
-
+#include "Vec3.h"
 
 class Input 
 {
@@ -19,7 +19,7 @@ public:
 	Input();
 
 	float lastTime;
-
+	Vec3 rotation;
 	void computeMatricesFromInputs(GLFWwindow*, GLint, GLint);
 	glm::mat4 getProjectionMatrix();
 	glm::mat4 getViewMatrix();

@@ -56,6 +56,14 @@ int main(void)
 	GLuint CubeProgram = CubeShader._Program;
 	glUseProgram(CubeProgram);
 
+	GLShader ParquetShader;
+	CreateProgram(&ParquetShader);
+	LoadVertexShader(CubeShader, "Cube.vs.glsl");
+	LoadFragmentShader(CubeShader, "Cube.fs.glsl");
+	LinkProgram(CubeShader);
+	GLuint ParquetProgram = ParquetShader._Program;
+	glUseProgram(ParquetProgram);
+
 	//load obj
 	std::vector< float > vertices;
 	std::vector< float > uvs;
@@ -66,13 +74,18 @@ int main(void)
 	std::vector< float > uvs2;
 	std::vector< float > normals2;
 	std::vector< unsigned int > indices2;
-	//bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
+	bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
 	bool res2 = loadObj("models/scene.obj", vertices2, uvs2, normals2, indices2);
 
 	//Texture
-	GLuint texture = LoadAndCreateTextureRGBA("../Textures/benjamin_raynal.jpg");
+	GLuint texture = LoadAndCreateTextureRGBA("../Textures/Debug.jpg");
 	GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
 	glUniform1f(locTexture, texture);
+
+	//Texture Parquet
+	GLuint textureParquet = LoadAndCreateTextureRGBA("../Textures/Parquet.jpg");
+	GLint locTextureParquet = glGetUniformLocation(ParquetProgram, "u_Texture");
+	glUniform1f(locTextureParquet, textureParquet);
 
 	//Inputs
 	Input input = Input();
@@ -81,13 +94,14 @@ int main(void)
 
 	// Attributes
 	GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
-	//glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
+	glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
+	GLint canalPos = glGetAttribLocation(ParquetProgram, "a_Position");
 	glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices2[0]);
 	glEnableVertexAttribArray(canalPos);
 
-
 	GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
-	//glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
+	glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
+	GLint canalUV = glGetAttribLocation(ParquetProgram, "a_Uv");
 	glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs2[0]);
 	glEnableVertexAttribArray(canalUV);
 
@@ -136,14 +150,14 @@ int main(void)
 			0, 0, 0, 1
 		);
 
-		Matrix4 modelMatrix = translationMatrix * scaleMatrix ;// * rotationMatrix
+		//Matrix4 modelMatrix = translationMatrix * scaleMatrix ;// * rotationMatrix
 
-		GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
+		//GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
 
 		//-----------------------View matrix------------------------------
 
-		//Position de la cam�ra
+		//Position de la camera
 		/*Vec3 eye = {
 		0, 0, -1
 		};
@@ -172,8 +186,27 @@ int main(void)
 		GLint projectionLoc = glGetUniformLocation(CubeProgram, "projectionMatrix");
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
+		//------------------------------------Quaternions---------------------------
+		//déclaration d'un quaternions
+		Quaternions quater = Quaternions(1, 1, 1, 1);
+		Quaternions quaterX = Quaternions(1, 1, 1, 1);
+		Quaternions quaterY = Quaternions(1, 1, 1, 1);
+		quater = quater.Location(quater, input.rotation, 1 * time);
+		quaterX = quater.Location(quaterX, Vec3(1, 0, 0), 1 * time);
+
+		//matrix de rotation de quater
+		Matrix4 quaternionMatrix = quater.rotationMatrix(quater);
+		Matrix4 quaternionMatrixX = quaterX.rotationMatrix(quaterX);
+		//récréation de model matrix
+		Matrix4 modelMatrix = translationMatrix * quaternionMatrix * quaternionMatrixX * scaleMatrix;
+
+		GLint quaterLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
+		glUniformMatrix4fv(quaterLoc, 1, GL_FALSE, modelMatrix.m);
+		
+
 		//Draw
 		glDrawArrays(GL_TRIANGLES, 0, vertices2.size() / 3);
+		glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 3);
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
@@ -182,7 +215,9 @@ int main(void)
 	}
 
 	glDeleteTextures(1, &texture);
+	glDeleteTextures(1, &textureParquet);
 	DestroyProgram(&CubeShader);
+	DestroyProgram(&ParquetShader);
 
 	glfwTerminate();
 	return 0;

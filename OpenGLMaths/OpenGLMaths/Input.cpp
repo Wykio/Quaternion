@@ -3,6 +3,7 @@
 #include <glew.h>
 #include <glfw3.h>
 #include "Input.h"
+#include "Vec3.h"
 
 Input::Input()
 {
@@ -54,6 +55,15 @@ void Input::computeMatricesFromInputs(GLFWwindow* win, GLint winWidth, GLint win
 	}
 	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) {
 		horizontalAngle += mouseSpeed * deltaTime * float(winWidth / 2 - 100);
+	}
+	if (glfwGetKey(win, GLFW_KEY_X) == GLFW_PRESS) {
+		rotation = Vec3(1, 0, 0);
+	}
+	if (glfwGetKey(win, GLFW_KEY_Y) == GLFW_PRESS) {
+		rotation = Vec3(0, 1, 0);
+	}
+	if (glfwGetKey(win, GLFW_KEY_Y) == GLFW_PRESS) {
+		rotation = Vec3(0, 0, 1);
 	}
 	if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwDestroyWindow(win);

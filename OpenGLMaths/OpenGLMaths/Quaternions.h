@@ -23,7 +23,7 @@ class Quaternions
 		float Norme(Quaternions q);
 		Quaternions Normalizeq(float norme, Quaternions q);
 		void Display();
-		Quaternions Location(Quaternions q, float *rotationAxes, float angle);
+		Quaternions Location(Quaternions q, Vec3 rotationAxes, float angle);
 		Matrix4 rotationMatrix(Quaternions q);
 
 		Quaternions operator * (Quaternions &q)
