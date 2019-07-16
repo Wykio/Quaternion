@@ -54,13 +54,13 @@ int main(void)
 	LoadFragmentShader(CubeShader, "Cube.fs.glsl");
 	LinkProgram(CubeShader);
 	GLuint CubeProgram = CubeShader._Program;
-	glUseProgram(CubeProgram);
+	//glUseProgram(CubeProgram);
 	
 	//Shader de translation
 	GLShader TranslationShader;
 	CreateProgram(&TranslationShader);
-	LoadVertexShader(TranslationShader, "Cube.vs.glsl");
-	LoadFragmentShader(TranslationShader, "Cube.fs.glsl");
+	LoadVertexShader(TranslationShader, "Translation.vs.glsl");
+	LoadFragmentShader(TranslationShader, "Translation.fs.glsl");
 	LinkProgram(TranslationShader);
 	GLuint TranslationProgram = TranslationShader._Program;
 	glUseProgram(TranslationProgram);
@@ -101,6 +101,11 @@ int main(void)
 	GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
 	glUniform1f(locTexture, texture);
 
+	//Texture translation
+	GLuint textureTrans = LoadAndCreateTextureRGBA("../Textures/Feather.jpg");
+	GLint locTextureTrans = glGetUniformLocation(TranslationProgram, "u_Texture");
+	glUniform1f(locTextureTrans, textureTrans);
+
 	//Texture Parquet
 	/*GLuint textureParquet = LoadAndCreateTextureRGBA("../Textures/Parquet.jpg");
 	GLint locTextureParquet = glGetUniformLocation(ParquetProgram, "u_Texture");
@@ -114,10 +119,17 @@ int main(void)
 	// Attributes
 	GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
 	//glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
-	glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices3[0]);
 	//GLint canalPos = glGetAttribLocation(ParquetProgram, "a_Position");
 	//glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices2[0]);
 	glEnableVertexAttribArray(canalPos);
+
+	//Attribute Translation Shader + Cube
+	GLint canalPosTrans = glGetAttribLocation(TranslationProgram, "a_Position");
+	glVertexAttribPointer(canalPosTrans, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices3[0]);
+	glEnableVertexAttribArray(canalPosTrans);
+	GLint canalUVTrans = glGetAttribLocation(TranslationProgram, "a_Uv");
+	glVertexAttribPointer(canalUVTrans, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs3[0]);
+	glEnableVertexAttribArray(canalUVTrans);
 
 	GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
 	//glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
@@ -172,8 +184,8 @@ int main(void)
 		);
 
 		//Translation de l'objet
-		GLint modelLoc = glGetUniformLocation(TranslationProgram, "translationMatrix");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, translationMatrix.m);
+		GLint modelTrans = glGetUniformLocation(TranslationProgram, "translationMatrix");
+		glUniformMatrix4fv(modelTrans, 1, GL_FALSE, translationMatrix.m);
 
 
 		//Matrix4 modelMatrix = translationMatrix * scaleMatrix ;// * rotationMatrix
@@ -188,7 +200,7 @@ int main(void)
 		0, 0, -1
 		};
 
-		//Centre de l'objet regard�
+		//Centre de l'objet regarde
 		Vec3 center = {
 			0, 0, 0
 		};*/
