@@ -81,7 +81,8 @@ int main(void)
 	input.lastTime = glfwGetTime();
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-	GLuint texture = LoadAndCreateTextureRGBA("../Textures/Debug.jpg");
+	GLuint texture; 
+	GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
 	GLuint textureParquet = LoadAndCreateTextureRGBA("../Textures/Parquet.jpg");
 
 	/* Loop until the user closes the window */
@@ -146,7 +147,7 @@ int main(void)
 
 		//-------------------------Premier OBJ---------------------------------
 		//Texture
-		GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
+		texture = LoadAndCreateTextureRGBA("../Textures/Debug.jpg");
 		glUniform1f(locTexture, texture);
 
 		// Attributes
@@ -165,7 +166,8 @@ int main(void)
 
 		//-------------------------Deuxième OBJ----------------------------------
 		//Texture
-		glUniform1f(locTexture, textureParquet);
+		texture = LoadAndCreateTextureRGBA("../Textures/Parquet.jpg");
+		glUniform1f(locTexture, texture);
 
 		// Attributes
 		//Position
