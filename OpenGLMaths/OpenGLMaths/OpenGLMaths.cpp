@@ -54,27 +54,7 @@ int main(void)
 	LoadFragmentShader(CubeShader, "Cube.fs.glsl");
 	LinkProgram(CubeShader);
 	GLuint CubeProgram = CubeShader._Program;
-	//glUseProgram(CubeProgram);
-	
-	//Shader de translation
-	GLShader TranslationShader;
-	CreateProgram(&TranslationShader);
-	LoadVertexShader(TranslationShader, "Translation.vs.glsl");
-	LoadFragmentShader(TranslationShader, "Translation.fs.glsl");
-	LinkProgram(TranslationShader);
-	GLuint TranslationProgram = TranslationShader._Program;
-	glUseProgram(TranslationProgram);
-
-
-
-	/*GLShader ParquetShader;
-	CreateProgram(&ParquetShader);
-	LoadVertexShader(CubeShader, "Cube.vs.glsl");
-	LoadFragmentShader(CubeShader, "Cube.fs.glsl");
-	LinkProgram(CubeShader);
-	GLuint ParquetProgram = ParquetShader._Program;
-	*/
-	//glUseProgram(ParquetProgram);
+	glUseProgram(CubeProgram);
 
 	//load obj
 	std::vector< float > vertices;
@@ -92,51 +72,17 @@ int main(void)
 	std::vector< float > normals3;
 	std::vector< unsigned int > indices3;
 
-	//bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
-	bool res3 = loadObj("cube.obj", vertices3, uvs3, normals3, indices3);
-	//bool res2 = loadObj("models/scene.obj", vertices2, uvs2, normals2, indices2);
+	bool res = loadObj("teapot.obj", vertices, uvs, normals, indices);
+	bool res2 = loadObj("models/scene.obj", vertices2, uvs2, normals2, indices2);
+	//bool res3 = loadObj("cube.obj", vertices3, uvs3, normals3, indices3);
 
-	//Texture
-	GLuint texture = LoadAndCreateTextureRGBA("../Textures/Debug.jpg");
-	GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
-	glUniform1f(locTexture, texture);
-
-	//Texture translation
-	GLuint textureTrans = LoadAndCreateTextureRGBA("../Textures/Feather.jpg");
-	GLint locTextureTrans = glGetUniformLocation(TranslationProgram, "u_Texture");
-	glUniform1f(locTextureTrans, textureTrans);
-
-	//Texture Parquet
-	/*GLuint textureParquet = LoadAndCreateTextureRGBA("../Textures/Parquet.jpg");
-	GLint locTextureParquet = glGetUniformLocation(ParquetProgram, "u_Texture");
-	glUniform1f(locTextureParquet, textureParquet);
-	*/
 	//Inputs
 	Input input = Input();
 	input.lastTime = glfwGetTime();
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-	// Attributes
-	GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
-	//glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
-	//GLint canalPos = glGetAttribLocation(ParquetProgram, "a_Position");
-	//glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices2[0]);
-	glEnableVertexAttribArray(canalPos);
-
-	//Attribute Translation Shader + Cube
-	GLint canalPosTrans = glGetAttribLocation(TranslationProgram, "a_Position");
-	glVertexAttribPointer(canalPosTrans, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices3[0]);
-	glEnableVertexAttribArray(canalPosTrans);
-	GLint canalUVTrans = glGetAttribLocation(TranslationProgram, "a_Uv");
-	glVertexAttribPointer(canalUVTrans, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs3[0]);
-	glEnableVertexAttribArray(canalUVTrans);
-
-	GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
-	//glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
-	glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs3[0]);
-	//GLint canalUV = glGetAttribLocation(ParquetProgram, "a_Uv");
-	//glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs2[0]);
-	glEnableVertexAttribArray(canalUV);
+	GLuint texture = LoadAndCreateTextureRGBA("../Textures/Debug.jpg");
+	GLuint textureParquet = LoadAndCreateTextureRGBA("../Textures/Parquet.jpg");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -145,11 +91,8 @@ int main(void)
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwSwapInterval(0);
-
 		//Temps
 		float time = (float)glfwGetTime();
-		GLint locTime = glGetUniformLocation(CubeProgram, "u_Time");
-		glUniform1f(locTime, time);
 
 		//----------------Matrix-----------------------------
 		input.computeMatricesFromInputs(window, windowWidth, windowHeight);
@@ -167,14 +110,6 @@ int main(void)
 			0, 0, 0, 1
 		);
 
-		//Rotation
-		Matrix4 rotationMatrix(
-			1, 0, 0, 0,
-			0, cos(time), sin(time), 0,
-			0, -sin(time), cos(time), 0,
-			0, 0, 0, 1
-		);
-
 		//Scale
 		Matrix4 scaleMatrix(
 			1, 0, 0, 0,
@@ -182,47 +117,6 @@ int main(void)
 			0, 0, 1, 0,
 			0, 0, 0, 1
 		);
-
-		//Translation de l'objet
-		GLint modelTrans = glGetUniformLocation(TranslationProgram, "translationMatrix");
-		glUniformMatrix4fv(modelTrans, 1, GL_FALSE, translationMatrix.m);
-
-
-		//Matrix4 modelMatrix = translationMatrix * scaleMatrix ;// * rotationMatrix
-
-		//GLint modelLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, modelMatrix.m);
-
-		//-----------------------View matrix------------------------------
-
-		//Position de la camera
-		/*Vec3 eye = {
-		0, 0, -1
-		};
-
-		//Centre de l'objet regarde
-		Vec3 center = {
-			0, 0, 0
-		};*/
-
-		//Matrix4 viewMatrix = Matrix4::lookAt(eye, center, Vec3(0, 1, 0));
-
-		glm::mat4 view = input.getViewMatrix();
-		GLint viewLoc = glGetUniformLocation(CubeProgram, "viewMatrix");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-
-
-		//------------------------Projection matrix-------------------------------
-
-		/*float fov = 45 * (3.14 / 180);
-		float aspectRatio = (float)windowWidth / (float)windowHeight;
-		float nearClipPlane = 0.01f;
-		float farClipPlane = 1000.f;
-
-		Matrix4 projectionMatrix = Matrix4::perspective(fov, aspectRatio, nearClipPlane, farClipPlane);*/
-		glm::mat4 projection = input.getProjectionMatrix();
-		GLint projectionLoc = glGetUniformLocation(CubeProgram, "projectionMatrix");
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
 		//------------------------------------Quaternions---------------------------
 		//déclaration d'un quaternions
@@ -239,11 +133,39 @@ int main(void)
 
 		GLint quaterLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
 		glUniformMatrix4fv(quaterLoc, 1, GL_FALSE, modelMatrix.m);
+
+		//-----------------------View matrix------------------------------
+
+		glm::mat4 view = input.getViewMatrix();
+		GLint viewLoc = glGetUniformLocation(CubeProgram, "viewMatrix");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+
+		//------------------------Projection matrix-------------------------------
 		
+		glm::mat4 projection = input.getProjectionMatrix();
+		GLint projectionLoc = glGetUniformLocation(CubeProgram, "projectionMatrix");
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
+
+
+		//-------------------------Premier OBJ---------------------------------
+		//Texture
+		GLint locTexture = glGetUniformLocation(CubeProgram, "u_Texture");
+		glUniform1f(locTexture, texture);
+
+		// Attributes
+		//Position
+		GLint canalPos = glGetAttribLocation(CubeProgram, "a_Position");
+		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices[0]);
+		glEnableVertexAttribArray(canalPos);
+
+		//UV
+		GLint canalUV = glGetAttribLocation(CubeProgram, "a_Uv");
+		glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs[0]);
+		glEnableVertexAttribArray(canalUV);
 
 		//Draw
-		//glDrawArrays(GL_TRIANGLES, 0, vertices2.size() / 3);
-		glDrawArrays(GL_TRIANGLES, 0, vertices3.size() / 3);
+		glDrawArrays(GL_TRIANGLES, 0, indices.size());
+
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
@@ -252,9 +174,8 @@ int main(void)
 	}
 
 	glDeleteTextures(1, &texture);
-	//glDeleteTextures(1, &textureParquet);
+	glDeleteTextures(1, &textureParquet);
 	DestroyProgram(&CubeShader);
-	//DestroyProgram(&ParquetShader);
 
 	glfwTerminate();
 	return 0;

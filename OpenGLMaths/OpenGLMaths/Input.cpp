@@ -22,7 +22,7 @@ Input::Input()
 void Input::computeMatricesFromInputs(GLFWwindow* win, GLint winWidth, GLint winHeight)
 {
 	float speed = 5.0f;
-	float mouseSpeed = 1.f;
+	float mouseSpeed = 0.5f;
 
 	double currentTime = glfwGetTime();
 	float deltaTime = float(currentTime - lastTime);
