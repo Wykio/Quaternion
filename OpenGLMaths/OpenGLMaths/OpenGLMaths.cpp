@@ -121,15 +121,12 @@ int main(void)
 		//------------------------------------Quaternions---------------------------
 		//déclaration d'un quaternions
 		Quaternions quater = Quaternions(1, 1, 1, 1);
-		Quaternions quaterX = Quaternions(1, 1, 1, 1);
 		quater = quater.Location(quater, input.rotation, 1 * time);
-		quaterX = quater.Location(quaterX, Vec3(1, 0, 0), 1);
 
 		//matrix de rotation de quater
 		Matrix4 quaternionMatrix = quater.rotationMatrix(quater);
-		Matrix4 quaternionMatrixX = quaterX.rotationMatrix(quaterX);
 		//récréation de model matrix
-		Matrix4 modelMatrix = translationMatrix * quaternionMatrix * quaternionMatrixX * scaleMatrix;
+		Matrix4 modelMatrix = translationMatrix * quaternionMatrix * scaleMatrix;
 
 		GLint quaterLoc = glGetUniformLocation(CubeProgram, "modelMatrix");
 		glUniformMatrix4fv(quaterLoc, 1, GL_FALSE, modelMatrix.m);
@@ -165,6 +162,24 @@ int main(void)
 
 		//Draw
 		glDrawArrays(GL_TRIANGLES, 0, indices.size());
+
+		//-------------------------Deuxième OBJ----------------------------------
+		//Texture
+		glUniform1f(locTexture, textureParquet);
+
+		// Attributes
+		//Position
+		glVertexAttribPointer(canalPos, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), &vertices2[0]);
+		glEnableVertexAttribArray(canalPos);
+
+		//UV
+		glVertexAttribPointer(canalUV, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), &uvs2[0]);
+		glEnableVertexAttribArray(canalUV);
+
+		glUniformMatrix4fv(quaterLoc, 1, GL_FALSE, Matrix4().m);
+
+		//Draw
+		glDrawArrays(GL_TRIANGLES, 0, indices2.size());
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
